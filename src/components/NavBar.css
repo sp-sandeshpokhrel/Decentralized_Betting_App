@@ -1,0 +1,39 @@
+.navbar {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    margin-right: 1rem;
+}
+
+.nav-button {
+    background-color: var(--secondary-color);
+    border: none;
+    border-radius: 0.25rem;
+    color: var(--button-color);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.nav-button:hover {
+    background-color: var(--button-hover-color);
+}
+
+.nav-list:last-child {
+    margin-left: auto;
+    margin-right: 5%;
+}

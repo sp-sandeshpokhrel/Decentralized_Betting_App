@@ -1,0 +1,9 @@
+.App {}
+
+:root {
+    --primary-color: #0077b6;
+    --secondary-color: #90e0ef;
+    --text-color: #fff;
+    --button-color: #0077b6;
+    --button-hover-color: #48cae4;
+}
