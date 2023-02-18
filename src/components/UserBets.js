@@ -1,17 +1,15 @@
 import { useState } from "react"
-import { ethers } from "ethers";
 import axios from 'axios';
 import UserBet from "./UserBet";
 import './Bet.css'
 
 export default function UserBets({ contract }) {
     const [bets, setBets] = useState([])
-    const [score, setScore] = useState(false)
-    const betsType = ["W1", "X", "W2"]
+   
 
 
     async function seeBets() {
-        try {
+        try {if(bets.length==0){
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
             const eventIds = await contract.getEventIdArray()
             let eventId, bet
@@ -38,6 +36,7 @@ export default function UserBets({ contract }) {
             }
 
             console.log(bets)
+        }
         }
         catch (error) {
             console.log(error)

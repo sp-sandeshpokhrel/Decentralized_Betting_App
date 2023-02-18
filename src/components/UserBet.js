@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { ethers } from "ethers";
 import axios from 'axios';
-import './Bet.css'
+
 
 export default function UserBet({ bet, myBet, contract }) {
-    const [bets, setBets] = useState([])
     const [score, setScore] = useState(false)
+    const [result,setResult]=useState(null)
     const betsType = ["W1", "X", "W2"]
 
 
@@ -24,8 +24,11 @@ export default function UserBet({ bet, myBet, contract }) {
 
     async function requestScore(id) {
         try {
-            const score = await contract.score(id)
-            setScore(score)
+        const eventScr=await contract.eventScore(id)
+        setScore(eventScr)
+            
+        await contract.requestMatchScore("0x00041F080c6624Cb34649fee8492f50b5fb13a01","c0fdd13cfcca4e308d0948cd1de7ef23",id)
+            
         } catch (error) {
             console.log(error)
         }
@@ -52,15 +55,18 @@ export default function UserBet({ bet, myBet, contract }) {
                 </div>
                 <div className="football-game-card-body-bet">
                     <div className="football-game-card-body-item-bet">
-
-                        {console.log(myBet.amount.toString())}
-                        {score ? <>{ethers.utils.formatEther(myBet.amount.toString())} ETH : {betsType[myBet.wld]}
+                    {ethers.utils.formatEther(myBet.amount.toString())} ETH : {betsType[myBet.wld]}
+                        {score ? <>
                             {myBet.claimed ?
                                 <button type="button" disabled>Claimed</button>
-
                                 :
                                 <button onClick={() => handleClaimBet(bet.match.id)} >Claim your bet</button>
-                            }</> : <button onClick={() => requestScore(bet.match.id)}>Request Score</button>}
+                            }
+                            </> 
+                            : 
+                            <button onClick={() => requestScore(bet.match.id)}>Request Score</button>
+                            }
+
 
 
 

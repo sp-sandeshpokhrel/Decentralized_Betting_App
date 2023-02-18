@@ -9,7 +9,7 @@ export default function Bets({ contract }) {
     useEffect(() => {
         axios({
             //https://cors-anywhere.herokuapp.com/
-            url: 'https://api.football-data.org/v4/competitions/CL/matches?status=SCHEDULED&limit=5',
+            url: 'https://api.football-data.org/v4/competitions/CL/matches?status=SCHEDULED',
             method: 'get',
             headers: {
                 'X-Auth-Token': '7feefaada93c4992af729bf0b67fb77f',
