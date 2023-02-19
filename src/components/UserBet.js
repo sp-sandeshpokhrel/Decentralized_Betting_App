@@ -1,11 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ethers } from "ethers";
-import axios from 'axios';
+
 
 
 export default function UserBet({ bet, myBet, contract }) {
     const [score, setScore] = useState(false)
-    const [result,setResult]=useState(null)
     const betsType = ["W1", "X", "W2"]
 
 
@@ -24,11 +23,11 @@ export default function UserBet({ bet, myBet, contract }) {
 
     async function requestScore(id) {
         try {
-        const eventScr=await contract.eventScore(id)
-        setScore(eventScr)
-            
-        await contract.requestMatchScore("0x00041F080c6624Cb34649fee8492f50b5fb13a01","c0fdd13cfcca4e308d0948cd1de7ef23",id)
-            
+
+            const eventScr = await contract.eventScore(id)
+            setScore(eventScr)
+            await contract.requestMatchScore("0x00041F080c6624Cb34649fee8492f50b5fb13a01", "c0fdd13cfcca4e308d0948cd1de7ef23", id)
+
         } catch (error) {
             console.log(error)
         }
@@ -46,7 +45,8 @@ export default function UserBet({ bet, myBet, contract }) {
                         <img src={bet.match.homeTeam.crest} height="40" width="40" alt="homeTeam" />
                         <p>{bet.match.homeTeam.name}</p>
                     </div>
-                    VS
+                    {bet.match.status == "FINISHED" ? `${bet.match.score.fullTime.home} - ${bet.match.score.fullTime.away}`
+                        : "VS"}
                     <div className="football-game-card-body-item">
                         <img src={bet.match.awayTeam.crest} height="40" width="40" alt="awayTeam" />
                         <p>{bet.match.awayTeam.name}</p>
@@ -55,17 +55,24 @@ export default function UserBet({ bet, myBet, contract }) {
                 </div>
                 <div className="football-game-card-body-bet">
                     <div className="football-game-card-body-item-bet">
-                    {ethers.utils.formatEther(myBet.amount.toString())} ETH : {betsType[myBet.wld]}
+                        {ethers.utils.formatEther(myBet.amount.toString())} ETH : {betsType[myBet.wld]}
                         {score ? <>
                             {myBet.claimed ?
                                 <button type="button" disabled>Claimed</button>
                                 :
                                 <button onClick={() => handleClaimBet(bet.match.id)} >Claim your bet</button>
                             }
-                            </> 
-                            : 
-                            <button onClick={() => requestScore(bet.match.id)}>Request Score</button>
-                            }
+                        </>
+                            :
+                            <>
+                                {bet.match.score.winner ?
+                                    <button onClick={() => requestScore(bet.match.id)}>Request Score on Blockchain</button>
+                                    :
+                                    <button >Happening Soon</button>
+                                }
+
+                            </>
+                        }
 
 
 
